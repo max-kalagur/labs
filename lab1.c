@@ -2,6 +2,8 @@
 #include <math.h>
 #include <stdio.h>
 
+// To compile: gcc lab1.c -o lab1 -lm
+
 int main()
 {
 // Варіант №12

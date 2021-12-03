@@ -4,6 +4,8 @@
 #include <ctype.h>
 #define MAX 500
 
+// To compile: gcc lab6.c -o lab6 -lm
+
 int main()
 {
 // Варіант №12
