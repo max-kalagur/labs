@@ -6,9 +6,20 @@
 #define MAX2 10000
 #define MAX3 100000
 
+
+#define NBUCKET 100  // Number of buckets
+#define INTERVAL 1000  // Each bucket capacity
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+struct Node *sortOneBucket(struct Node *list, long int *swapCounter, long int *checkCounter);
+int getBucketIndex(int value);
+
 void swap(int *a, int *b);
 double sortShake( int arr[], int n );
-void heapify(int arr[], int n, int i);
+void heapify(int arr[], int n, int i, long int* swapCounter, long int* checkCounter);
 double sortHeap( int arr[], int n );
 double sortBucket( int arr[], int n );
 
@@ -32,6 +43,7 @@ double sortShake( int arr[], int n ) {
         int startI = 0;
         int endI = n - 1;
     
+        long int swapCounter=0, checkCounter=0;
 
         while (swapped)
         {
@@ -47,7 +59,9 @@ double sortShake( int arr[], int n ) {
                 if (arr[i] > arr[i + 1]) {
                     swap(&arr[i], &arr[i + 1]);
                     swapped = 1;
+                    swapCounter++;
                 }
+                checkCounter++;
             }
     
             // if nothing moved, then array is sorted.
@@ -69,7 +83,9 @@ double sortShake( int arr[], int n ) {
                 if (arr[i] > arr[i + 1]) {
                     swap(&arr[i], &arr[i + 1]);
                     swapped = 1;
+                    swapCounter++;
                 }
+                checkCounter++;
             }
     
             // increase the starting point, because
@@ -80,12 +96,16 @@ double sortShake( int arr[], int n ) {
 
     //=============================================================/
 
+    printf("Обміни: %ld, Порівняння: %ld\n", swapCounter, checkCounter);
+
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     timeSec = end.tv_sec-start.tv_sec + 0.000000001*(end.tv_nsec-start.tv_nsec);
     return timeSec;
 }
 
-void heapify(int arr[], int n, int i) {
+
+void heapify(int arr[], int n, int i, long int *swapCounter, long int *checkCounter) {
+
     // Find largest among root, left child and right child
     int largest = i;
     int left = 2 * i + 1;
@@ -94,16 +114,21 @@ void heapify(int arr[], int n, int i) {
     if (left < n && arr[left] > arr[largest]) {
         largest = left;
     }
+    *checkCounter = *checkCounter+1;
 
     if (right < n && arr[right] > arr[largest]) {
         largest = right;
     }
+    *checkCounter = *checkCounter+1;
   
     // Swap and continue heapifying if root is not largest
     if (largest != i) {
         swap(&arr[i], &arr[largest]);
-        heapify(arr, n, largest);
+        *swapCounter = *swapCounter+1;
+
+        heapify(arr, n, largest, swapCounter, checkCounter);
     }
+    *checkCounter = *checkCounter+1;
 }
 
 double sortHeap( int arr[], int n ) {
@@ -111,53 +136,39 @@ double sortHeap( int arr[], int n ) {
     struct timespec start, end;
     double timeSec;
 
+    long int swapCounter=0, checkCounter=0;
+
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
     //============================================================/
 
     // Build max heap
     for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
+        heapify(arr, n, i, &swapCounter, &checkCounter);
   
     // Heap sort
     for (int i = n - 1; i >= 0; i--) {
         swap(&arr[0], &arr[i]);
+        swapCounter++;
   
         // Heapify root element to get highest element at root again
-        heapify(arr, i, 0);
+        heapify(arr, i, 0, &swapCounter, &checkCounter);
     }
 
     //=============================================================/
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     timeSec = end.tv_sec-start.tv_sec + 0.000000001*(end.tv_nsec-start.tv_nsec);
+
+    printf("Обміни: %ld, Порівняння: %ld\n", swapCounter, checkCounter);
+
     return timeSec;
 }
 
 
-
-
-
-
-
-
-
-
-#define NBUCKET 100  // Number of buckets
-#define INTERVAL 1000  // Each bucket capacity
-
-struct Node {
-    int data;
-    struct Node *next;
-};
-
-struct Node *InsertionSort(struct Node *list);
-void print(int arr[]);
-void printBuckets(struct Node *list);
-int getBucketIndex(int value);
-
 // Function to sort the elements of each bucket
-struct Node *InsertionSort(struct Node *list) {
+struct Node *sortOneBucket(struct Node *list, long int *swapCounter, long int *checkCounter) {
+
     struct Node *k, *nodeList;
     if (list == 0 || list->next == 0) {
         return list;
@@ -174,13 +185,17 @@ struct Node *InsertionSort(struct Node *list) {
             k = k->next;
             tmp->next = nodeList;
             nodeList = tmp;
+            *swapCounter = *swapCounter+1;
             continue;
         }
+        *checkCounter = *checkCounter+1;
 
         for (ptr = nodeList; ptr->next != 0; ptr = ptr->next) {
             if (ptr->next->data > k->data)
                 break;
+            *checkCounter = *checkCounter+1;
         }
+        *checkCounter = *checkCounter+1;
 
         if (ptr->next != 0) {
             struct Node *tmp;
@@ -188,13 +203,16 @@ struct Node *InsertionSort(struct Node *list) {
             k = k->next;
             tmp->next = ptr->next;
             ptr->next = tmp;
+            *swapCounter = *swapCounter+1;
             continue;
         } else {
             ptr->next = k;
             k = k->next;
             ptr->next->next = 0;
+            *swapCounter = *swapCounter+1;
             continue;
         }
+        *checkCounter = *checkCounter+1;
     }
     return nodeList;
 }
@@ -203,12 +221,12 @@ int getBucketIndex(int value) {
   return value / INTERVAL;
 }
 
-
-
 double sortBucket( int arr[], int n ) {
 
     struct timespec start, end;
     double timeSec;
+
+    long int swapCounter=0, checkCounter=0;
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
@@ -239,7 +257,7 @@ double sortBucket( int arr[], int n ) {
 
     // Sort the elements of each bucket
     for (i = 0; i < NBUCKET; ++i) {
-        buckets[i] = InsertionSort(buckets[i]);
+        buckets[i] = sortOneBucket(buckets[i], &swapCounter, &checkCounter);
     }
 
     // Put sorted elements on arr
@@ -247,12 +265,14 @@ double sortBucket( int arr[], int n ) {
         struct Node *node;
         node = buckets[i];
         while (node) {
-        arr[j++] = node->data;
-        node = node->next;
+            arr[j++] = node->data;
+            node = node->next;
         }
     }
 
     //=============================================================/
+
+    printf("Обміни: %ld, Порівняння: %ld\n", swapCounter, checkCounter);
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     timeSec = end.tv_sec-start.tv_sec + 0.000000001*(end.tv_nsec-start.tv_nsec);
@@ -470,53 +490,89 @@ int main()
 
         >>>>>>>> Sorting method #1 <<<<<<<<<
         Tests for 1000 elements
-        Sorted array: 0.000012 sec.
-        DESC sorted array: 0.012505 sec.
-        Random array: 0.008607 sec.
+
+            Обміни: 0, Порівняння: 999
+        Sorted array: 0.000033 sec.
+            Обміни: 498501, Порівняння: 499500
+        DESC sorted array: 0.024388 sec.
+            Обміни: 246725, Порівняння: 380672
+        Random array: 0.013676 sec.
         -------------------------------------------
         Tests for 10000 elements
-        Sorted array: 0.000101 sec.
-        DESC sorted array: 0.441178 sec.
-        Random array: 0.282968 sec.
+        
+            Обміни: 0, Порівняння: 9999
+        Sorted array: 0.000174 sec.
+            Обміни: 49985001, Порівняння: 49995000
+        DESC sorted array: 0.426024 sec.
+            Обміни: 24946434, Порівняння: 37492500
+        Random array: 0.294251 sec.
         -------------------------------------------
         Tests for 100000 elements
-        Sorted array: 0.000274 sec.
-        DESC sorted array: 28.388183 sec.
-        Random array: 29.117755 sec.
+        
+            Обміни: 0, Порівняння: 99999
+        Sorted array: 0.000277 sec.
+            Обміни: 4999850001, Порівняння: 4999950000
+        DESC sorted array: 30.450707 sec.
+            Обміни: 2499017974, Порівняння: 3752124054
+        Random array: 28.016578 sec.
         ---------------------------------------------------
         ---------------------------------------------------
         >>>>>>>> Sorting method #2 <<<<<<<<<
         Tests for 1000 elements
-        Sorted array: 0.000157 sec.
-        DESC sorted array: 0.000179 sec.
-        Random array: 0.000208 sec.
+        
+            Обміни: 9709, Порівняння: 30627
+        Sorted array: 0.000197 sec.
+            Обміни: 8380, Порівняння: 26640
+        DESC sorted array: 0.000177 sec.
+            Обміни: 9072, Порівняння: 28716
+        Random array: 0.000231 sec.
         -------------------------------------------
         Tests for 10000 elements
-        Sorted array: 0.002382 sec.
-        DESC sorted array: 0.002468 sec.
-        Random array: 0.003164 sec.
+        
+            Обміни: 131957, Порівняння: 410871
+        Sorted array: 0.002909 sec.
+            Обміни: 117162, Порівняння: 366486
+        DESC sorted array: 0.002879 sec.
+            Обміни: 124160, Порівняння: 387480
+        Random array: 0.003553 sec.
         -------------------------------------------
         Tests for 100000 elements
-        Sorted array: 0.030523 sec.
-        DESC sorted array: 0.031334 sec.
-        Random array: 0.035296 sec.
+        
+            Обміни: 1650855, Порівняння: 5102565
+        Sorted array: 0.033268 sec.
+            Обміни: 1497536, Порівняння: 4642608
+        DESC sorted array: 0.033676 sec.
+            Обміни: 1574784, Порівняння: 4874352
+        Random array: 0.043389 sec.
         ---------------------------------------------------
         ---------------------------------------------------
         >>>>>>>> Sorting method #3 <<<<<<<<<
         Tests for 1000 elements
-        Sorted array: 0.000049 sec.
-        DESC sorted array: 0.001499 sec.
-        Random array: 0.000783 sec.
+        
+            Обміни: 999, Порівняння: 0
+        Sorted array: 0.000073 sec.
+            Обміни: 999, Порівняння: 499499
+        DESC sorted array: 0.002681 sec.
+            Обміни: 999, Порівняння: 260462
+        Random array: 0.002206 sec.
         -------------------------------------------
         Tests for 10000 elements
-        Sorted array: 0.000478 sec.
-        DESC sorted array: 0.017181 sec.
-        Random array: 0.014781 sec.
+        
+            Обміни: 9990, Порівняння: 0
+        Sorted array: 0.000619 sec.
+            Обміни: 9990, Порівняння: 5003990
+        DESC sorted array: 0.022290 sec.
+            Обміни: 9990, Порівняння: 2511304
+        Random array: 0.016396 sec.
         -------------------------------------------
         Tests for 100000 elements
-        Sorted array: 0.004625 sec.
-        DESC sorted array: 0.166572 sec.
-        Random array: 3.883893 sec.
+        
+            Обміни: 99900, Порівняння: 0
+        Sorted array: 0.006362 sec.
+            Обміни: 99900, Порівняння: 50048900
+        DESC sorted array: 0.207150 sec.
+            Обміни: 99990, Порівняння: 249785134
+        Random array: 3.395651 sec.
         ---------------------------------------------------
         ---------------------------------------------------
 
