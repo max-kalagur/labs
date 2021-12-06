@@ -84,12 +84,13 @@ int main()
     }
     printf("\n");
 
-    for(int j=0;j<n;j++) {
-        for(int i=0;i<m;i++) {
-            
-            for(int ii=0;ii<m-1;ii++) {
 
-                if( a[ii][j] < a[ii+1][j] ) {
+    for(int i=0;i<m;i++) {  // йдемо по стовпчиках
+        for(int j=0;j<n;j++) {  // йдемо по рядках і реалізуємо для кожного стовпчика сортування обміном
+            
+            for(int ii=0;ii<n-1;ii++) { // йдемо по рядках
+
+                if( a[ii][j] < a[ii+1][j] ) {   // сортуємо по спаданню
                     int tmp = a[ii+1][j];
                     a[ii+1][j] = a[ii][j];
                     a[ii][j] = tmp;
@@ -97,7 +98,6 @@ int main()
 
             }
         }
-
     }
 
     for(int i=0;i<m;i++) {

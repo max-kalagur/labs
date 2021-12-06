@@ -27,9 +27,9 @@ int main()
     printf("введіть сторони трикутника a b c через пропуск\n" );
     scanf("%f%f%f",&a, &b, &c);
     
-    bisA = sqrt(2) * ( (a * b) / (a + b) );
-    bisB = sqrt(2) * ( (b * c) / (b + c) );
-    bisC = sqrt(2) * ( (a * c) / (a + c) );
+    bisA = sqrt(a*b*(a+b+c)*(a+b-c))/(a+b);
+    bisB = sqrt(b*c*(a+b+c)*(b+c-a))/(b+c);
+    bisC = sqrt(c*a*(a+b+c)*(c+a-b))/(c+a);
 
 
     p = (a + b + c)/2;
