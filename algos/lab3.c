@@ -402,7 +402,7 @@ int main()
         // for(int l=0; l<1000; l++) {
 
             for(int i=0; i<=MAX2-1; i++) {
-                arr2[i] = rand() % 10000;
+                arr2[i] = rand() % 1000;
             }
 
             if( s == 1) {
@@ -464,7 +464,7 @@ int main()
         // for(int l=0; l<1000; l++) {
 
             for(int i=0; i<=MAX3-1; i++) {
-                arr3[i] = rand() % 10000;
+                arr3[i] = rand() % 1000;
             }
 
             if( s == 1) {
@@ -490,93 +490,91 @@ int main()
 
         >>>>>>>> Sorting method #1 <<<<<<<<<
         Tests for 1000 elements
-
+        
             Обміни: 0, Порівняння: 999
-        Sorted array: 0.000033 sec.
+        Sorted array: 0.000035 sec.
             Обміни: 498501, Порівняння: 499500
-        DESC sorted array: 0.024388 sec.
-            Обміни: 246725, Порівняння: 380672
-        Random array: 0.013676 sec.
+        DESC sorted array: 0.013247 sec.
+            Обміни: 247074, Порівняння: 380672
+        Random array: 0.005593 sec.
         -------------------------------------------
         Tests for 10000 elements
         
             Обміни: 0, Порівняння: 9999
-        Sorted array: 0.000174 sec.
+        Sorted array: 0.000058 sec.
             Обміни: 49985001, Порівняння: 49995000
-        DESC sorted array: 0.426024 sec.
-            Обміни: 24946434, Порівняння: 37492500
-        Random array: 0.294251 sec.
+        DESC sorted array: 0.364273 sec.
+            Обміни: 25180146, Порівняння: 37647035
+        Random array: 0.288175 sec.
         -------------------------------------------
         Tests for 100000 elements
         
             Обміни: 0, Порівняння: 99999
-        Sorted array: 0.000277 sec.
+        Sorted array: 0.000269 sec.
             Обміни: 4999850001, Порівняння: 4999950000
-        DESC sorted array: 30.450707 sec.
-            Обміни: 2499017974, Порівняння: 3752124054
-        Random array: 28.016578 sec.
+        DESC sorted array: 31.208428 sec.
+            Обміни: 2498877640, Порівняння: 3745971840
+        Random array: 28.248346 sec.
         ---------------------------------------------------
         ---------------------------------------------------
         >>>>>>>> Sorting method #2 <<<<<<<<<
         Tests for 1000 elements
         
             Обміни: 9709, Порівняння: 30627
-        Sorted array: 0.000197 sec.
+        Sorted array: 0.000186 sec.
             Обміни: 8380, Порівняння: 26640
-        DESC sorted array: 0.000177 sec.
-            Обміни: 9072, Порівняння: 28716
-        Random array: 0.000231 sec.
+        DESC sorted array: 0.000182 sec.
+            Обміни: 9045, Порівняння: 28635
+        Random array: 0.000221 sec.
         -------------------------------------------
         Tests for 10000 elements
         
             Обміни: 131957, Порівняння: 410871
-        Sorted array: 0.002909 sec.
+        Sorted array: 0.003058 sec.
             Обміни: 117162, Порівняння: 366486
-        DESC sorted array: 0.002879 sec.
-            Обміни: 124160, Порівняння: 387480
-        Random array: 0.003553 sec.
+        DESC sorted array: 0.002868 sec.
+            Обміни: 124131, Порівняння: 387393
+        Random array: 0.003755 sec.
         -------------------------------------------
         Tests for 100000 elements
         
             Обміни: 1650855, Порівняння: 5102565
-        Sorted array: 0.033268 sec.
+        Sorted array: 0.038056 sec.
             Обміни: 1497536, Порівняння: 4642608
-        DESC sorted array: 0.033676 sec.
-            Обміни: 1574784, Порівняння: 4874352
-        Random array: 0.043389 sec.
+        DESC sorted array: 0.030170 sec.
+            Обміни: 1574653, Порівняння: 4873959
+        Random array: 0.046030 sec.
         ---------------------------------------------------
         ---------------------------------------------------
         >>>>>>>> Sorting method #3 <<<<<<<<<
         Tests for 1000 elements
         
             Обміни: 999, Порівняння: 0
-        Sorted array: 0.000073 sec.
+        Sorted array: 0.000097 sec.
             Обміни: 999, Порівняння: 499499
-        DESC sorted array: 0.002681 sec.
-            Обміни: 999, Порівняння: 260462
-        Random array: 0.002206 sec.
+        DESC sorted array: 0.002322 sec.
+            Обміни: 999, Порівняння: 246042
+        Random array: 0.001194 sec.
         -------------------------------------------
         Tests for 10000 elements
         
             Обміни: 9990, Порівняння: 0
-        Sorted array: 0.000619 sec.
+        Sorted array: 0.000852 sec.
             Обміни: 9990, Порівняння: 5003990
-        DESC sorted array: 0.022290 sec.
-            Обміни: 9990, Порівняння: 2511304
-        Random array: 0.016396 sec.
+        DESC sorted array: 0.022906 sec.
+            Обміни: 9990, Порівняння: 2496964
+        Random array: 0.014987 sec.
         -------------------------------------------
         Tests for 100000 elements
         
             Обміни: 99900, Порівняння: 0
-        Sorted array: 0.006362 sec.
+        Sorted array: 0.006880 sec.
             Обміни: 99900, Порівняння: 50048900
-        DESC sorted array: 0.207150 sec.
-            Обміни: 99990, Порівняння: 249785134
-        Random array: 3.395651 sec.
+        DESC sorted array: 0.227964 sec.
+            Обміни: 99990, Порівняння: 250824564
+        Random array: 3.485933 sec.
         ---------------------------------------------------
         ---------------------------------------------------
-
-        
     */
 
     return 0;
